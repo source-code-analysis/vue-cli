@@ -15,8 +15,10 @@ process.on('exit', () => {
 
 /**
  * List repos.
+ * vue list 命令用于查看官方提供的模板列表
  */
 
+// 1.github api 拉取 repos 列表
 request({
   url: 'https://api.github.com/users/vuejs-templates/repos',
   headers: {
@@ -24,10 +26,12 @@ request({
   }
 }, (err, res, body) => {
   if (err) logger.fatal(err)
+  // 2.将返回结果解析为数组
   const requestBody = JSON.parse(body)
   if (Array.isArray(requestBody)) {
     console.log('  Available official templates:')
     console.log()
+    // 3.打印输出repos列表
     requestBody.forEach(repo => {
       console.log(
         '  ' + chalk.yellow('★') +

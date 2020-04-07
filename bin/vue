@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander')
-
+// vue --help，命令列表
 program
   .version(require('../package').version)
   .usage('<command> [options]')
@@ -10,4 +10,5 @@ program
   .command('build', 'prototype a new project')
   .command('create', '(for v3 warning only)')
 
+// 解析 process.argv 数组： [node目录, 执行文件目录, 参数]
 program.parse(process.argv)

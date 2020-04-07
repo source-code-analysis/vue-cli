@@ -21,6 +21,7 @@ const getTemplatePath = localPath.getTemplatePath
 
 /**
  * Usage.
+ * 执行 vue init，输出
  */
 
 program
@@ -30,6 +31,7 @@ program
 
 /**
  * Help.
+ * 执行 vue init --help，输出
  */
 
 program.on('--help', () => {
@@ -45,6 +47,7 @@ program.on('--help', () => {
 
 /**
  * Help.
+ * 若命令行参数为空，返回 vue init --help 执行结果
  */
 
 function help () {
@@ -55,16 +58,20 @@ help()
 
 /**
  * Settings.
+ * program.args[0] 模板名称
+ * program.args[1] 本地项目名
+ * 举例：vue init webpack my-project
  */
-
+// 1.获取模板名称
 let template = program.args[0]
 const hasSlash = template.indexOf('/') > -1
+// 2.获取本地项目/目录名
 const rawName = program.args[1]
 const inPlace = !rawName || rawName === '.'
 const name = inPlace ? path.relative('../', process.cwd()) : rawName
 const to = path.resolve(rawName || '.')
 const clone = program.clone || false
-
+// 3.若指定--offline，则template取之前缓存的模板
 const tmp = path.join(home, '.vue-templates', template.replace(/[\/:]/g, '-'))
 if (program.offline) {
   console.log(`> Use cached template at ${chalk.yellow(tildify(tmp))}`)
@@ -73,6 +80,7 @@ if (program.offline) {
 
 /**
  * Padding.
+ * 生成项目目录，回调执行 run 函数
  */
 
 console.log()
@@ -80,6 +88,7 @@ process.on('exit', () => {
   console.log()
 })
 
+// 若目录已存在，向用户确认是否在当前目录生成项目
 if (inPlace || exists(to)) {
   inquirer.prompt([{
     type: 'confirm',
@@ -92,19 +101,22 @@ if (inPlace || exists(to)) {
       run()
     }
   }).catch(logger.fatal)
-} else {
+} else {  // 目录不存在，直接执行 run 函数
   run()
 }
 
 /**
  * Check, download and generate the project.
+ * 检查，下载模板，生成项目
  */
 
 function run () {
-  // check if template is local
+  // 判断使用的模板是否是本地的，若是，执行：
   if (isLocalPath(template)) {
     const templatePath = getTemplatePath(template)
+    // 判断本地此模板是否存在
     if (exists(templatePath)) {
+      // 执行generate生成项目
       generate(name, templatePath, to, err => {
         if (err) logger.fatal(err)
         console.log()
@@ -113,10 +125,11 @@ function run () {
     } else {
       logger.fatal('Local template "%s" not found.', template)
     }
-  } else {
+  } else { // 若不是本地模板，则使用线上模板生成项目
     checkVersion(() => {
+      // 根据模板名是否带 / 判断是使用官方提供的模板还是使用第三方模板
       if (!hasSlash) {
-        // use official templates
+        // 使用官方提供的模板
         const officialTemplate = 'vuejs-templates/' + template
         if (template.indexOf('#') !== -1) {
           downloadAndGenerate(officialTemplate)
@@ -138,7 +151,7 @@ function run () {
 
 /**
  * Download a generate from a template repo.
- *
+ * 下载和生成项目：从一个 template 仓库
  * @param {String} template
  */
 
@@ -147,9 +160,11 @@ function downloadAndGenerate (template) {
   spinner.start()
   // Remove if local template exists
   if (exists(tmp)) rm(tmp)
+  // 依赖 download-git-repo，clone代码仓库
   download(template, tmp, { clone }, err => {
     spinner.stop()
     if (err) logger.fatal('Failed to download repo ' + template + ': ' + err.message.trim())
+    // 调用 generate 从 template 生成项目
     generate(name, tmp, to, err => {
       if (err) logger.fatal(err)
       console.log()

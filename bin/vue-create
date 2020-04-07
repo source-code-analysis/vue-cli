@@ -2,6 +2,7 @@
 
 const chalk = require('chalk')
 
+// vue create 仅支持 vue cli3，输出升级提醒给用户
 console.log()
 console.log(
   `  ` +
