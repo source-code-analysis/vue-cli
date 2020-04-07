@@ -19,6 +19,8 @@ process.on('exit', () => {
  */
 
 // 1.github api 拉取 repos 列表
+// 注意, Github Api 对未认证的请求有请求数限制, 超过限制则会报错
+// 可以通过 BA 认证的方式来提高请求数限制, 具体见https://developer.github.com/v3/#rate-limiting
 request({
   url: 'https://api.github.com/users/vuejs-templates/repos',
   headers: {

@@ -82,33 +82,7 @@ vue-cli 是 [Vue.js](https://github.com/source-code-analysis/vue) 脚手架, 阅
 ```
 
 ### 依赖包
-- [dependencies](package.json#L31-L52)
 - [devDependencies](package.json#L53-L59)
-
-```json
-"dependencies": {
-  "async": "^2.4.0",
-  "chalk": "^2.1.0",          // node终端样式库
-  "commander": "^2.9.0",
-  "consolidate": "^0.14.0",
-  "download-git-repo": "^1.0.1",
-  "handlebars": "^4.0.5",
-  "inquirer": "^6.0.0",        // 交互式命令行工具
-  "metalsmith": "^2.1.0",
-  "minimatch": "^3.0.0",
-  "multimatch": "^2.1.0",
-  "ora": "^1.3.0",            // 命令行前缀
-  "read-metadata": "^1.0.0",
-  "request": "^2.67.0",
-  "rimraf": "^2.5.0",
-  "semver": "^5.1.0",
-  "tildify": "^1.2.0",
-  "uid": "0.0.2",
-  "user-home": "^2.0.0",
-  "validate-npm-package-name": "^3.0.0",
-  "coffee-script": "1.12.7"
-},
-```
 
 ```json
 "devDependencies": {
@@ -131,13 +105,54 @@ vue-cli 是 [Vue.js](https://github.com/source-code-analysis/vue) 脚手架, 阅
 }
 ```
 
-
 ## 源码分析
-### bin
-- [全局命令配置](package.json#L6-L10)
+### vue
+- [全局命令bin配置](package.json#L6-L10)
 - [vue 命令列表](bin/vue)
-- [vue init 命令执行逻辑](bin/vue-init)
+
+### vue init
+- [vue init 命令执行逻辑](bin/vue-init)✨
+- libraries
+  - [logger.js](lib/logger.js)
+  - [generate.js](lib/generate.js)
+  - [check-version.js](lib/check-version.js)
+  - [warnings.js](lib/warnings.js)
+  - [local-path.js](lib/local-path.js)
+- npm packages
+  - download-git-repo
+  - commander
+  - fs.existsSync
+  - path
+  - user-home
+  - tildify
+  - ora，命令行前缀
+  - chalk，node终端样式库
+  - inquirer，交互式命令行工具
+  - rimraf
+
+### vue list
 - [vue list 命令执行逻辑](bin/vue-list)
+- libraries
+  - [logger.js](lib/logger.js)
+- npm packages
+  - request
+  - chalk
+
+### generate 生成器
+- [generate.js](lib/generate.js)✨
+- libraries
+  - [ask.js](lib/ask.js)
+  - [filter.js](lib/filter.js)
+  - [logger.js](lib/logger.js)
+  - [options.js](lib/options.js)
+- npm packages
+  - chalk
+  - metalsmith
+  - [handlebars](https://handlebarsjs.com/zh/)，一个node.js模板引擎
+  - async
+  - consolidate
+  - path
+  - multimatch
 
 ## License
 
