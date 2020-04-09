@@ -145,6 +145,10 @@ vue-cli 是 [Vue.js](https://github.com/source-code-analysis/vue) 脚手架, 阅
   - [filter.js](lib/filter.js)
   - [logger.js](lib/logger.js)
   - [options.js](lib/options.js)
+    - libraries
+      - [git-user.js](lib/git-user.js)，从git命令行获取name、email
+    - npm packages
+      - [read-metadata](https://www.npmjs.com/package/read-metadata)，加载 JSON or YAML 返回 JS 对象
 - npm packages
   - chalk
   - metalsmith
